@@ -61,6 +61,15 @@ body {
   padding: 3px;
 }
 
+.tab-list-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  list-style-type: none;
+  flex-wrap: wrap;
+}
+
 .tab-item-container {
   padding-right: 4px;
 }
@@ -91,4 +100,10 @@ body {
 .active-tab-btn {
   border-bottom: 2px solid #fec653;
   color: #fec653;
+}
+
+.image {
+  height: 100px;
+  width: 100px;
+  border-radius: 15px;
 }

@@ -250,26 +250,61 @@ const imagesList = [
 
 // Replace your code here
 class App extends Component {
+  state = {activeTabId: tabsList[0].tabId}
+
+  getFilteredProjects = () => {
+    const {activeTabId} = this.state
+    const filteredImages = imagesList.filter(
+      eachImageDetails => eachImageDetails.category === activeTabId,
+    )
+    return filteredImages
+  }
+
   renderTabItem = () => {
-    const {updateActiveTabId, isActive} = this.props
-    const {tabId, displayText} = tabsList
+    const {tabId} = tabsList
+    const {activeTabId} = this.state
+
+    const activeTrue = tabId === activeTabId
+
+    const activeTabClassName = activeTrue ? 'active-tab-btn' : ''
 
     const onClickTabItem = () => {
-      updateActiveTabId(tabId)
+      this.setState({activeTabId: tabId})
     }
 
-    const activeTabClassName = isActive ? 'active-tab-btn' : ''
-
     return (
-      <li className="tab-item-container">
-        <button
-          type="button"
-          className={`tab-btn ${activeTabClassName}`}
-          onClick={onClickTabItem}
-        >
-          {displayText}
-        </button>
-      </li>
+      <ul className="tab-list-container">
+        {tabsList.map(eachTab => (
+          <li className="tab-item-container" key={eachTab.tabId}>
+            <button
+              type="button"
+              className={`tab-btn ${activeTabClassName}`}
+              onClick={onClickTabItem}
+            >
+              {eachTab.displayText}
+            </button>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  renderImageItem = () => {
+    const filteredImages = this.getFilteredProjects()
+    return (
+      <ul className="tab-list-container">
+        {filteredImages.map(eachImg => (
+          <li key={eachImg.id} className="tab-item-container">
+            <button type="button" className="tab-btn" onClick={this.onClickImg}>
+              <img
+                src={eachImg.thumbnailUrl}
+                alt="thumbnail"
+                className="image"
+              />
+            </button>
+          </li>
+        ))}
+      </ul>
     )
   }
 
@@ -293,7 +328,8 @@ class App extends Component {
           </div>
         </div>
         <div className="app-container">
-          <h1>Madhu Gorava</h1>
+          <div>{this.renderTabItem()}</div>
+          <div>{this.renderImageItem()}</div>
         </div>
       </nav>
     )
